@@ -1,0 +1,1914 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8084
+  description: Generated server url
+paths:
+  /api/validate-session:
+    post:
+      tags:
+      - login-controller
+      summary: Validate employee session.
+      operationId: validateSession
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: boolean
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/remote-check-out:
+    post:
+      tags:
+      - check-out-controller
+      summary: Checking out employee using remote checkout.
+      operationId: remoteCheckOut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckOutRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckOutResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/remote-check-in:
+    post:
+      tags:
+      - check-in-controller
+      summary: Checking in employee using remote checkin.
+      operationId: remoteCheckIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckInRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckInResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/profiles:
+    get:
+      tags:
+      - profile-controller
+      summary: Getting profile data from database.
+      operationId: getProfileData
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+    post:
+      tags:
+      - profile-controller
+      summary: Updating profile data to database.
+      operationId: updateProfileData
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileUpdateRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileUpdateResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/profile-images/upload:
+    post:
+      tags:
+      - document-controller
+      summary: Uploading employee profile picture.
+      operationId: uploadProfileImages
+      parameters:
+      - name: X-Staff-Id
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: byte
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: boolean
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/office-check-out:
+    post:
+      tags:
+      - check-out-controller
+      summary: Checking out employee using office checkout.
+      operationId: checkOut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckOutRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckOutResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/office-check-in:
+    post:
+      tags:
+      - check-in-controller
+      summary: Checking in employee using office checkin.
+      operationId: checkIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckInRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckInResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/notifications/send:
+    post:
+      tags:
+      - notification-controller
+      summary: Send notification to respective channel.
+      operationId: sendNotification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendNotificationRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/notifications/send-by-staffId:
+    post:
+      tags:
+      - notification-controller
+      operationId: sendNotification_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendNotificationByStaffIdRequestDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/notifications/register:
+    post:
+      tags:
+      - notification-controller
+      summary: Register client with associated push token for further usage.
+      operationId: registerClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PushNotificationRegisterRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: boolean
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/login:
+    post:
+      tags:
+      - login-controller
+      summary: Loging in to the app and getting jwt token back.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/leaves:
+    get:
+      tags:
+      - leave-controller
+      summary: Getting leave balance for employee.
+      operationId: getLeaveBalance
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaveBalanceResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+    post:
+      tags:
+      - leave-controller
+      summary: Taking leave.
+      operationId: requestLeave
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeaveRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaveResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/documents/upload:
+    post:
+      tags:
+      - document-controller
+      summary: Uploading document.
+      operationId: uploadDocuments
+      parameters:
+      - name: X-File-Name
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: X-File-Type
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Leave-Taken-Id
+        in: header
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: byte
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: boolean
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/documents/upload-announcement:
+    post:
+      tags:
+      - document-controller
+      summary: Uploading announcement document.
+      operationId: uploadAnnouncementDocuments
+      parameters:
+      - name: X-File-Name
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: X-File-Type
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Notification-Id
+        in: header
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: byte
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: boolean
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/documents/download:
+    post:
+      tags:
+      - document-controller
+      summary: Downloading leave document.
+      operationId: downloadLeaveDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DocumentRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/documents/download-announcement:
+    post:
+      tags:
+      - document-controller
+      summary: Downloading notification document.
+      operationId: downloadNotificationDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnnouncementDocumentRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/change-password:
+    post:
+      tags:
+      - login-controller
+      summary: Change password on first login.
+      operationId: chagnePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChangePasswordResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/respond-remote-attendances:
+    post:
+      tags:
+      - approval-controller
+      summary: Responding to the waiting remote check in/out approvals.
+      operationId: respondWaitingRemoteAttendanceApproval
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WaitingRemoteAttendanceApprovalDecisionRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingApprovalDecisionResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/respond-leaves:
+    post:
+      tags:
+      - approval-controller
+      summary: Responding to the waiting leave approvals.
+      operationId: respondWaitingLeaveApproval
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WaitingLeaveApprovalDecisionRequestDto"
+        required: true
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingApprovalDecisionResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/notifications:
+    get:
+      tags:
+      - notification-controller
+      summary: Get notification for provided staff id.
+      operationId: getNotification
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationListResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/leaves/taken-leaves:
+    get:
+      tags:
+      - leave-controller
+      summary: Getting current year taken leave for employee.
+      operationId: getLeaveHistory
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TakenLeavesResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/leaves/histories:
+    get:
+      tags:
+      - leave-controller
+      summary: Getting current year leave history for employee.
+      operationId: getLeaveHistory_1
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: filterMonth
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaveHistoryResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/leaves/cancel:
+    get:
+      tags:
+      - leave-controller
+      summary: Remove provided leave from database.
+      operationId: cancelPendingLeave
+      parameters:
+      - name: leaveId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: boolean
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/employees/list:
+    get:
+      tags:
+      - employee-controller
+      summary: Getting all employee list by department.
+      operationId: fetchEmployeeList
+      parameters:
+      - name: department
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeList"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/employees/attendance-list:
+    get:
+      tags:
+      - employee-controller
+      summary: Getting all attendance summary list.
+      operationId: fetchAttendnaceSummaryList
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceSummaryList"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/departments:
+    get:
+      tags:
+      - department-controller
+      summary: Getting all departments list.
+      operationId: getWaitingLeaveApprovalList
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DepartmentListResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/attendances:
+    get:
+      tags:
+      - attendance-controller
+      summary: "Getting holidays, working days, office hours for employee to be used\
+        \ in check in/out and taking a leave."
+      operationId: getAttendaceSetting
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceSettingResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/attendances/status:
+    get:
+      tags:
+      - attendance-controller
+      summary: Getting today attendance status for provided staffId.
+      operationId: getAttedanceStatus
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceStatusResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/attendances/remote-histories:
+    get:
+      tags:
+      - attendance-controller
+      summary: Getting remtoe attendance history for provided staffId.
+      operationId: getAttendaceHistories
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: filterMonth
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RemoteAttendanceHistoryResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/attendances/office-histories:
+    get:
+      tags:
+      - attendance-controller
+      summary: Getting office attendance history for provided staffId.
+      operationId: getOfficeAttendanceHistory
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: filterMonth
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfficeAttendanceHistoryResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/single-remote-attendance:
+    get:
+      tags:
+      - approval-controller
+      summary: Get single approval waiting remote attendance request by id.
+      operationId: getWaitingRemoteAttendanceApprovalById
+      parameters:
+      - name: remoteAttendanceId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestedRemoteAttendance"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/single-leave:
+    get:
+      tags:
+      - approval-controller
+      summary: Get single approval waiting leave request by id.
+      operationId: getWaitingLeaveApprovalById
+      parameters:
+      - name: leaveId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingLeaveApproval"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/remote-attendances:
+    get:
+      tags:
+      - approval-controller
+      summary: Getting all the requested remote check in/out approvals which are waiting
+        to be approved by the requested approver or manager.
+      operationId: getWaitingRemoteAttendancesApprovalList
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: filterMonth
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingRemoteAttendanceApprovalResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/remote-attendance-histories:
+    get:
+      tags:
+      - approval-controller
+      summary: Getting all the responded remote attendance approvals which are waiting
+        to be approved by the requested approver or manager.
+      operationId: getRespondedRemoteAttendanceHistories
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: filterMonth
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RespondedRemoteAttedanceHistoryResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/leaves:
+    get:
+      tags:
+      - approval-controller
+      summary: Getting all the requested leave approvals which are waiting to be approved
+        by the requested approver or manager.
+      operationId: getWaitingLeaveApprovalList_1
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: filterMonth
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingLeaveApprovalResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/leave-histories:
+    get:
+      tags:
+      - approval-controller
+      summary: Getting all the responded leave approvals which are waiting to be approved
+        by the requested approver or manager.
+      operationId: getRespondedLeaveRequests
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: filterMonth
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RespondedLeaveHistoryResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/approvals/count:
+    get:
+      tags:
+      - approval-controller
+      summary: Get approval request count by approver id.
+      operationId: getApprovalRequestCount
+      parameters:
+      - name: approverId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApprovalRequestCountResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+  /api/announcement:
+    get:
+      tags:
+      - announcement-controller
+      summary: Getting all the announcements.
+      operationId: getAllAnnouncement
+      parameters:
+      - name: staffId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnnouncementListResponseDto"
+        default:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+components:
+  schemas:
+    SessionRequestDto:
+      type: object
+      properties:
+        staffId:
+          type: string
+        deviceInfo:
+          type: string
+    ErrorResponseDto:
+      type: object
+      properties:
+        code:
+          type: string
+        reason:
+          type: string
+    CheckOutRequestDto:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        checkOutTime:
+          type: string
+          format: date-time
+        staffId:
+          type: string
+        location:
+          type: string
+        reason:
+          type: string
+    CheckOutResponseDto:
+      type: object
+      properties:
+        checkedOutTime:
+          type: string
+    CheckInRequestDto:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        checkInTime:
+          type: string
+          format: date-time
+        staffId:
+          type: string
+        location:
+          type: string
+        reason:
+          type: string
+    CheckInResponseDto:
+      type: object
+      properties:
+        checkedInTime:
+          type: string
+    ProfileUpdateRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        nrc:
+          type: string
+        nrcMm:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        image:
+          type: string
+    ProfileUpdateResponseDto:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        updatedValue:
+          type: string
+    SendNotificationRequestDto:
+      type: object
+      properties:
+        senderId:
+          type: string
+        channel:
+          type: string
+        title:
+          type: string
+        message:
+          type: string
+    SendNotificationByStaffIdRequestDto:
+      type: object
+      properties:
+        senderId:
+          type: string
+        staffId:
+          type: string
+        title:
+          type: string
+        message:
+          type: string
+    PushNotificationRegisterRequestDto:
+      type: object
+      properties:
+        staffId:
+          type: string
+        channel:
+          type: string
+        pushToken:
+          type: string
+    LoginRequestDto:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        deviceInfo:
+          type: string
+    LoginResponseDto:
+      type: object
+      properties:
+        token:
+          type: string
+    LeaveRequestDto:
+      type: object
+      properties:
+        staffId:
+          type: string
+        leaveTypeId:
+          type: integer
+          format: int32
+        requestedDates:
+          type: array
+          items:
+            type: string
+            format: date
+        duration:
+          type: string
+        reason:
+          type: string
+    LeaveBalance:
+      type: object
+      properties:
+        leaveTypeName:
+          type: string
+        leaveTypeId:
+          type: integer
+          format: int32
+        availableLeave:
+          type: number
+          format: double
+        remainedLeave:
+          type: number
+          format: double
+    LeaveBalanceResponseDto:
+      type: object
+      properties:
+        leaveBalanceList:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaveBalance"
+    LeaveResponseDto:
+      type: object
+      properties:
+        leaveId:
+          type: integer
+          format: int32
+        leaveBalance:
+          $ref: "#/components/schemas/LeaveBalanceResponseDto"
+    DocumentRequestDto:
+      type: object
+      properties:
+        leaveTakenId:
+          type: integer
+          format: int32
+        documentName:
+          type: string
+    DocumentResponseDto:
+      type: object
+      properties:
+        documentName:
+          type: string
+        encodedDocument:
+          type: string
+    AnnouncementDocumentRequestDto:
+      type: object
+      properties:
+        notificationId:
+          type: integer
+          format: int32
+        documentName:
+          type: string
+    ChangePasswordRequestDto:
+      type: object
+      properties:
+        username:
+          type: string
+        newPassword:
+          type: string
+    ChangePasswordResponseDto:
+      type: object
+      properties:
+        staffId:
+          type: string
+    WaitingRemoteAttendanceApprovalDecisionRequestDto:
+      type: object
+      properties:
+        staffId:
+          type: string
+        remoteAttendanceId:
+          type: integer
+          format: int64
+        decision:
+          type: string
+        approverMessage:
+          type: string
+    WaitingApprovalDecisionResponseDto:
+      type: object
+      properties:
+        respondedApprovalId:
+          type: integer
+          format: int64
+    WaitingLeaveApprovalDecisionRequestDto:
+      type: object
+      properties:
+        staffId:
+          type: string
+        leaveId:
+          type: integer
+          format: int32
+        decision:
+          type: string
+        approverMessage:
+          type: string
+    Manager:
+      type: object
+      properties:
+        name:
+          type: string
+        position:
+          type: string
+    ProfileResponseDto:
+      type: object
+      properties:
+        image:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        myanmarName:
+          type: string
+        staffId:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+          format: date
+        nrc:
+          type: string
+        nrcMm:
+          type: string
+        ssbNo:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        permanentAddress:
+          type: string
+        position:
+          type: string
+        department:
+          type: string
+        joinedDate:
+          type: string
+          format: date
+        totalWorkingDays:
+          type: string
+        manager:
+          $ref: "#/components/schemas/Manager"
+        autoCheckIn:
+          type: boolean
+    NotificationListResponseDto:
+      type: object
+      properties:
+        notificationList:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotificationResponse"
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    NotificationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        message:
+          type: string
+        documentList:
+          type: array
+          items:
+            type: string
+        pushedDate:
+          type: string
+    TakenLeavesResponseDto:
+      type: object
+      properties:
+        takenLeaves:
+          type: array
+          items:
+            type: string
+    Document:
+      type: object
+      properties:
+        documentName:
+          type: string
+        leaveTakenId:
+          type: integer
+          format: int32
+    LeaveHistory:
+      type: object
+      properties:
+        leaveId:
+          type: integer
+          format: int32
+        leaveType:
+          type: string
+        takenDates:
+          type: array
+          items:
+            type: string
+        leaveStatus:
+          type: string
+          enum:
+          - ALLDAY
+          - MORNING
+          - EVENING
+        reason:
+          type: string
+        documentList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Document"
+        approveStatus:
+          type: string
+        approverMessage:
+          type: string
+        requestedAt:
+          type: string
+    LeaveHistoryResponseDto:
+      type: object
+      properties:
+        leaveHistoryList:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaveHistory"
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    Employee:
+      type: object
+      properties:
+        username:
+          type: string
+        name:
+          type: string
+        myanmarName:
+          type: string
+        staffId:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+          format: date
+        nrc:
+          type: string
+        nrcMm:
+          type: string
+        ssbNo:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        permanentAddress:
+          type: string
+        position:
+          type: string
+        department:
+          type: string
+        joinedDate:
+          type: string
+          format: date
+        totalWorkingDays:
+          type: string
+        manager:
+          $ref: "#/components/schemas/Manager"
+        attendanceStatus:
+          type: string
+    EmployeeList:
+      type: object
+      properties:
+        employeeList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Employee"
+    AttendanceSummary:
+      type: object
+      properties:
+        department:
+          type: string
+        recordList:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+    AttendanceSummaryList:
+      type: object
+      properties:
+        attendanceSummaryList:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceSummary"
+    DepartmentListResponseDto:
+      type: object
+      properties:
+        departmentName:
+          type: array
+          items:
+            type: string
+    AttendanceSettingResponseDto:
+      type: object
+      properties:
+        holidays:
+          type: array
+          items:
+            type: string
+        workingDaysAndHours:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkingDayAndHours"
+        onSiteLocation:
+          $ref: "#/components/schemas/GeoLocation"
+        ipAddress:
+          type: array
+          items:
+            type: string
+    GeoLocation:
+      type: object
+      properties:
+        locationName:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        radius:
+          type: integer
+          format: int32
+    WorkingDayAndHours:
+      type: object
+      properties:
+        date:
+          type: string
+        officeStartTime:
+          type: string
+        officeEndTime:
+          type: string
+        duration:
+          type: number
+          format: double
+        allowedLateMinute:
+          type: integer
+          format: int64
+        allowedEarlyMinute:
+          type: integer
+          format: int64
+    AttendanceStatusResponseDto:
+      type: object
+      properties:
+        latePercentage:
+          type: number
+          format: double
+        workPercentage:
+          type: number
+          format: double
+        earlyPercentage:
+          type: number
+          format: double
+        checkedIn:
+          type: boolean
+        checkedOut:
+          type: boolean
+    RemoteAttendanceHistory:
+      type: object
+      properties:
+        attendanceType:
+          type: string
+        attendanceTime:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        reason:
+          type: string
+        approverMessage:
+          type: string
+        approveStatus:
+          type: string
+        requestedAt:
+          type: string
+          format: date
+    RemoteAttendanceHistoryResponseDto:
+      type: object
+      properties:
+        remoteAttendanceHistoryList:
+          type: array
+          items:
+            $ref: "#/components/schemas/RemoteAttendanceHistory"
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+    OfficeAttendance:
+      type: object
+      properties:
+        date:
+          type: string
+        checkedInTime:
+          type: string
+        checkedOutTime:
+          type: string
+        checkInStatus:
+          type: string
+        checkOutStatus:
+          type: string
+        absent:
+          type: boolean
+    OfficeAttendanceHistoryResponseDto:
+      type: object
+      properties:
+        officeAttendanceHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/OfficeAttendance"
+        totalPages:
+          type: integer
+          format: int32
+    RequestedRemoteAttendance:
+      type: object
+      properties:
+        remoteAttendanceId:
+          type: integer
+          format: int64
+        employeeName:
+          type: string
+        employeeDempartment:
+          type: string
+        staffId:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        reason:
+          type: string
+        approveStatus:
+          type: string
+        approverMessage:
+          type: string
+        attendanceType:
+          type: string
+        attendanceTime:
+          type: string
+        requestedAt:
+          type: string
+    RequestedLeave:
+      type: object
+      properties:
+        staffId:
+          type: string
+        leaveTypeId:
+          type: integer
+          format: int32
+        leaveTypeName:
+          type: string
+        requestedDates:
+          type: array
+          items:
+            type: string
+        leaveStatus:
+          type: string
+        reason:
+          type: string
+        approveStatus:
+          type: string
+        approverMessage:
+          type: string
+        documentList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Document"
+        requestedAt:
+          type: string
+    WaitingLeaveApproval:
+      type: object
+      properties:
+        leaveId:
+          type: integer
+          format: int32
+        employeeName:
+          type: string
+        employeeDepartment:
+          type: string
+        leaveRequest:
+          $ref: "#/components/schemas/RequestedLeave"
+    WaitingRemoteAttendanceApprovalResponseDto:
+      type: object
+      properties:
+        requestedRemoteAttendanceList:
+          type: array
+          items:
+            $ref: "#/components/schemas/RequestedRemoteAttendance"
+    RespondedRemoteAttedanceHistoryResponseDto:
+      type: object
+      properties:
+        approvedRemoteAttendanceHistoyr:
+          type: array
+          items:
+            $ref: "#/components/schemas/RespondedRemoteAttendanceHistoryDto"
+        rejectedRemoteAttendanceHistoyr:
+          type: array
+          items:
+            $ref: "#/components/schemas/RespondedRemoteAttendanceHistoryDto"
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    RespondedRemoteAttendanceHistoryDto:
+      type: object
+      properties:
+        remoteAttendanceId:
+          type: integer
+          format: int64
+        employeeName:
+          type: string
+        employeeDempartment:
+          type: string
+        attendanceType:
+          type: string
+        attendanceTime:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        reason:
+          type: string
+        approverMessage:
+          type: string
+        approveStatus:
+          type: string
+        requestedAt:
+          type: string
+          format: date
+    WaitingLeaveApprovalResponseDto:
+      type: object
+      properties:
+        waitingLeaveApprovalList:
+          type: array
+          items:
+            $ref: "#/components/schemas/WaitingLeaveApproval"
+    RespondedLeaveHistoryDto:
+      type: object
+      properties:
+        employeeName:
+          type: string
+        employeeDepartment:
+          type: string
+        respondedLeaveHistory:
+          $ref: "#/components/schemas/LeaveHistory"
+    RespondedLeaveHistoryResponseDto:
+      type: object
+      properties:
+        approvedLeaves:
+          type: array
+          items:
+            $ref: "#/components/schemas/RespondedLeaveHistoryDto"
+        rejectedLeaves:
+          type: array
+          items:
+            $ref: "#/components/schemas/RespondedLeaveHistoryDto"
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    ApprovalRequestCountResponseDto:
+      type: object
+      properties:
+        requestCount:
+          type: integer
+          format: int32
+    AnnouncementListResponseDto:
+      type: object
+      properties:
+        announcements:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnnouncementResponse"
+    AnnouncementResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        message:
+          type: string
+        fileName:
+          type: array
+          items:
+            type: string
+        lastUpdateDate:
+          type: string
