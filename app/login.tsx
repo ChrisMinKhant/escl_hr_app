@@ -70,10 +70,10 @@ export default function LoginScreen() {
 
   return (
     <View className="flex-1 justify-center items-center bg-gray-50 p-4">
-      <View className="w-full max-w-md bg-white rounded-xl p-6 shadow-lg gap-4">
+      <View className="w-full max-w-md bg-white rounded-lg p-6 shadow-md gap-4">
         <View>
-          <Text className="text-2xl font-bold mb-2 text-center">
-            ESCL HR App Login
+          <Text className="text-base font-bold mb-2 text-center">
+            ESCL HR Login
           </Text>
           <Text className="text-sm text-gray-600 mb-6 text-center">
             Enter your credentials
@@ -82,7 +82,7 @@ export default function LoginScreen() {
         {/* Username Field */}
         <FormControl isInvalid={!!errors.username}>
           <FormControlLabel>
-            <FormControlLabelText>Username</FormControlLabelText>
+            <FormControlLabelText className="text-sm">Username</FormControlLabelText>
           </FormControlLabel>
           <Controller
             control={control}
@@ -97,6 +97,7 @@ export default function LoginScreen() {
             render={({ field: { onChange, onBlur, value } }) => (
               <Input>
                 <InputField
+                  className="text-sm"
                   placeholder="Enter your username"
                   value={value}
                   onChangeText={onChange}
@@ -115,7 +116,7 @@ export default function LoginScreen() {
         {/* Password Field */}
         <FormControl isInvalid={!!errors.password}>
           <FormControlLabel>
-            <FormControlLabelText>Password</FormControlLabelText>
+            <FormControlLabelText className="text-sm">Password</FormControlLabelText>
           </FormControlLabel>
           <Controller
             control={control}
@@ -130,6 +131,7 @@ export default function LoginScreen() {
             render={({ field: { onChange, onBlur, value } }) => (
               <Input>
                 <InputField
+                  className="text-sm"
                   placeholder="Enter your password"
                   value={value}
                   onChangeText={onChange}
@@ -149,9 +151,9 @@ export default function LoginScreen() {
         <Button
           onPress={handleSubmit(onSubmit)}
           disabled={isSubmitting}
-          className="mt-2"
+          className="mt-2 py-3 bg-blue-600 items-center"
         >
-          {isSubmitting ? <Spinner /> : <ButtonText>Login</ButtonText>}
+          {isSubmitting ? <Spinner /> : <ButtonText className="text-sm">LOGIN</ButtonText>}
         </Button>
       </View>
     </View>
