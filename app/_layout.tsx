@@ -1,11 +1,9 @@
 import {
-  DarkTheme,
   DefaultTheme,
-  ThemeProvider,
+  ThemeProvider
 } from "@react-navigation/native";
-import { Stack, useRouter, useSegments } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { Slot, useRouter, useSegments } from "expo-router";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
@@ -13,42 +11,54 @@ import { useIsLoggedIn } from "@/store/auth";
 
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export const unstable_settings = {
   anchor: "(tabs)",
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  let colorScheme = useColorScheme();
   const isLoggedIn = useIsLoggedIn();
   const segments = useSegments();
   const router = useRouter();
+  // Guard to ensure first paint completes with <Slot /> rendered before navigation
+  const [layoutMounted, setLayoutMounted] = useState(false);
+
+  // Mark mounted after initial commit
+  useEffect(() => {
+    setLayoutMounted(true);
+  }, []);
 
   useEffect(() => {
-    const inAuthGroup = segments[0] === "(tabs)";
 
-    if (!isLoggedIn && inAuthGroup) {
-      // Redirect to login if trying to access protected routes
+    // Avoid navigating before segments are populated & layout mounted
+    if (!layoutMounted) return;
+    // segments is a typed tuple from expo-router; just ensure first segment exists
+    if (!segments[0]) return;
+
+    const first = segments[0];
+    const inTabsGroup = first === "(tabs)";
+
+    if (!isLoggedIn && inTabsGroup) {
       router.replace("/login");
-    } else if (isLoggedIn && segments[0] === "login") {
-      // Redirect to main app if already logged in
+      return;
+    }
+
+    if (isLoggedIn && first === "login") {
       router.replace("/(tabs)");
     }
-  }, [isLoggedIn, segments]);
+  }, [isLoggedIn, segments, layoutMounted]);
 
   return (
-    <GluestackUIProvider mode="light">
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal", title: "Modal" }}
-          />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </GluestackUIProvider>
+
+    <SafeAreaProvider>
+      <GluestackUIProvider mode="light">
+        <ThemeProvider value={DefaultTheme}>
+          <Slot />
+        </ThemeProvider>
+      </GluestackUIProvider>
+    </SafeAreaProvider>
+
   );
 }

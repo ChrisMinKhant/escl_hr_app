@@ -71,13 +71,17 @@ export class ApiClient {
       body,
     });
   }
+
   login(body: LoginRequestDto) {
-    return httpRequest<LoginResponseDto>({
-      path: "/api/login",
-      method: "POST",
-      body,
-    });
+    // return httpRequest<LoginResponseDto>({
+    //   path: "/api/login",
+    //   method: "POST",
+    //   body,
+    // });
+
+    return Promise.resolve<LoginResponseDto>({ token: "mock-token" });
   }
+
   chagnePassword(body: ChangePasswordRequestDto) {
     // operationId has a typo in spec
     return httpRequest<ChangePasswordResponseDto>({
@@ -119,12 +123,38 @@ export class ApiClient {
 
   // PROFILE
   getProfileData(query: StaffIdQuery) {
-    return httpRequest<ProfileResponseDto>({
-      path: "/api/profiles",
-      method: "GET",
-      query,
-    });
+    // MOCK: return a fake profile response (temporary stub)
+    const mock: ProfileResponseDto = {
+      image: undefined,
+      username: "jdoe",
+      name: "John Doe",
+      myanmarName: "",
+      staffId: query.staffId,
+      gender: "Male",
+      dob: "1990-01-01",
+      nrc: "12/PaKaNa(N)123456",
+      nrcMm: "",
+      ssbNo: "SSB-0001",
+      mobile: "+959123456789",
+      email: "jdoe@example.com",
+      address: "Yangon, Myanmar",
+      permanentAddress: "Yangon, Myanmar",
+      position: "Software Engineer",
+      department: "Engineering",
+      joinedDate: "2020-05-10",
+      totalWorkingDays: "1000",
+      manager: { name: "Jane Manager", position: "Engineering Manager" },
+      autoCheckIn: false,
+    };
+    return Promise.resolve(mock);
+
+    // return httpRequest<ProfileResponseDto>({
+    //   path: "/api/profiles",
+    //   method: "GET",
+    //   query,
+    // });
   }
+
   updateProfileData(query: StaffIdQuery, body: ProfileUpdateRequestDto) {
     return httpRequest<ProfileUpdateResponseDto>({
       path: "/api/profiles",

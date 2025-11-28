@@ -35,7 +35,7 @@ export default function TabLayout() {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+          tabBarActiveTintColor: Colors["light"].tint,
           tabBarButton: HapticTab,
           headerShown: true,
           headerRight: () => (
@@ -47,7 +47,7 @@ export default function TabLayout() {
               <IconSymbol
                 size={24}
                 name="line.3.horizontal"
-                color={Colors[colorScheme ?? "light"].tint}
+                color={Colors["light"].tint}
               />
             </Pressable>
           ),
